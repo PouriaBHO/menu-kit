@@ -1,0 +1,9 @@
+{"v":1,"info":{"name":"کافه نمونه","tagline":"قهوه، دسر و آرامش","logo":"","brand":"#0F6B5C","phone":"07612345678","address":"بندرعباس، خیابان نمونه، پلاک ۱۰","hours":"هر روز ۹ صبح تا ۱۲ شب","instagram":"sample_cafe","note":"سفارش خود را به گارسون بگویید","mapLat":"27.1865","mapLng":"56.2808","mapLink":""},
+"categories":[{"id":"c1","name":"قهوه"},{"id":"c2","name":"نوشیدنی سرد"},{"id":"c3","name":"کیک و دسر"}],
+"items":[
+{"id":"i1","cat":"c1","name":"اسپرسو","price":"85000","desc":"دبل شات، قهوه تازه آسیاب‌شده","img":"","off":false},
+{"id":"i2","cat":"c1","name":"لاته","price":"120000","desc":"اسپرسو با شیر بخارداده","img":"","off":false},
+{"id":"i3","cat":"c1","name":"کاپوچینو","price":"125000","desc":"","img":"","off":false},
+{"id":"i4","cat":"c2","name":"آیس‌آمریکانو","price":"110000","desc":"","img":"","off":false},
+{"id":"i5","cat":"c2","name":"موهیتو","price":"135000","desc":"نعنا، لیمو، گاز","img":"","off":true},
+{"id":"i6","cat":"c3","name":"چیزکیک","price":"150000","desc":"با سس توت‌فرنگی","img":"","off":false}]}
