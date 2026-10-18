@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>پنل منو</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
+<style>
+:root{--c:#0F6B5C;--bg:#F6F7F5;--ink:#1B2421;--mute:#68726E;--line:#DCE1DE;--bad:#B3261E}
+*{box-sizing:border-box}
+body{margin:0;font-family:Vazirmatn,Tahoma,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;font-size:15px}
+header{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line)}
+.top{display:flex;justify-content:space-between;align-items:center;padding:10px 14px}
+.top b{font-size:16px}#st{font-size:12px;color:var(--mute)}
+.tabs{display:flex;overflow-x:auto;scrollbar-width:none}
+.tabs button{flex:1;min-width:max-content;padding:10px 14px;border:0;border-bottom:3px solid transparent;background:none;font:inherit;color:var(--mute)}
+.tabs button.on{color:var(--c);border-color:var(--c);font-weight:800}
+main{max-width:640px;margin:0 auto;padding:14px 14px 80px;display:grid;gap:12px}
+.box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:10px}
+.f{display:grid;gap:4px}.f span{font-size:13px;color:var(--mute)}
+input,textarea,select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:16px;background:#fff;color:var(--ink)}
+textarea{min-height:64px;resize:vertical}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 16px;border:1px solid var(--c);border-radius:12px;background:#fff;color:var(--c);font:inherit;font-weight:700;cursor:pointer;text-align:center}
+.btn.p{background:var(--c);color:#fff}.btn.big{padding:16px;font-size:16px}
+.btn.x{border-color:var(--bad);color:var(--bad)}
+.btn.s{padding:6px 12px;font-weight:400}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.row>input{flex:1;min-width:0}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{padding:5px 14px;border:1px solid var(--line);border-radius:999px;background:#fff;font:inherit;cursor:pointer}
+.chip.on{background:var(--c);color:#fff;border-color:var(--c)}
+.item{display:grid;grid-template-columns:84px 1fr;gap:10px;align-items:start}
+.item.warn{border-color:#E0A100;box-shadow:0 0 0 2px #FFF3CC}
+.th{width:84px;height:84px;border-radius:12px;background:#EEF1EF;border:1px dashed var(--line);display:flex;align-items:center;justify-content:center;font-size:26px;overflow:hidden;cursor:pointer}
+.th img{width:100%;height:100%;object-fit:cover}
+.sw{width:34px;height:34px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--line);cursor:pointer}
+.empty,.hint{color:var(--mute);font-size:13px}
+.ok{color:#1B7F3B}.bad{color:var(--bad)}
+iframe{width:100%;height:180px;border:0;border-radius:12px}
+input[type=color]{padding:2px;height:40px;width:60px}
+input[type=checkbox]{width:auto}
+label.btn input,.hid{display:none}
+</style>
+</head>
+<body>
+<header>
+  <div class="top"><b>پنل منو</b><span id="st"></span></div>
+  <div class="tabs" id="tabs"></div>
+</header>
+<main id="main"></main>
+<script>
+const $=s=>document.querySelector(s);
+const el=(t,a={},...k)=>{const e=document.createElement(t);for(const[x,v]of Object.entries(a)){if(x==='class')e.className=v;else if(x.startsWith('on'))e[x]=v;else if(v!==false&&v!=null)e.setAttribute(x,v)}for(const c of k.flat())e.append(c===false||c==null?'':c);return e};
+const idb=(m,k,v)=>new Promise((res,rej)=>{const o=indexedDB.open('menu-kit',1);o.onupgradeneeded=()=>o.result.createObjectStore('s');o.onsuccess=()=>{const t=o.result.transaction('s',m),st=t.objectStore('s'),r=m==='readwrite'?st.put(v,k):st.get(k);t.oncomplete=()=>res(r.result);t.onerror=()=>rej(t.error)};o.onerror=()=>rej(o.error)});
+const en=s=>s.replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+const uid=()=>Math.random().toString(36).slice(2,9);
+const blank=()=>({v:1,info:{name:'',tagline:'',logo:'',brand:'#0F6B5C',phone:'',address:'',hours:'',instagram:'',note:'سفارش خود را به گارسون بگویید',mapLat:'',mapLng:'',mapLink:''},categories:[],items:[]});
+let S,GH={owner:'',repo:'',branch:'main',token:''},tab='info',cur=null,msg='';
+let tm;const save=()=>{clearTimeout(tm);$('#st').textContent='در حال ذخیره…';tm=setTimeout(async()=>{try{await idb('readwrite','draft',S);$('#st').textContent='✓ ذخیره شد'}catch{$('#st').textContent='ذخیره نشد؛ فضای مرورگر پر است'}},400)};
+const saveGH=()=>idb('readwrite','gh',GH);
+
+async function compress(file,max,type,q){
+  const b=await createImageBitmap(file,{imageOrientation:'from-image'});
+  const k=Math.min(1,max/Math.max(b.width,b.height)),c=document.createElement('canvas');
+  c.width=Math.round(b.width*k);c.height=Math.round(b.height*k);
+  const x=c.getContext('2d');if(type==='image/jpeg'){x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height)}
+  x.drawImage(b,0,0,c.width,c.height);return c.toDataURL(type,q);
+}
+const pick=(cls,child,multiple,cb)=>{const i=el('input',{type:'file',accept:'image/*',multiple:multiple||false});i.onchange=async()=>{const f=[...i.files];i.value='';if(f.length)await cb(f)};return el('label',{class:cls},child,i)};
+
+const field=(label,obj,key,o={})=>{
+  const i=el(o.area?'textarea':'input',{type:o.type||'text',placeholder:o.ph||'',inputmode:o.mode,dir:o.dir});
+  i.value=obj[key]||'';
+  i.oninput=()=>{if(o.num){obj[key]=en(i.value).replace(/\D/g,'');if(i.value!==obj[key])i.value=obj[key]}else obj[key]=i.value;save()};
+  return el('label',{class:'f'},el('span',{},label),i);
+};
+
+const T={};
+const names={info:'اطلاعات',cats:'دسته‌ها',items:'محصولات',pub:'انتشار',seller:'تنظیمات فنی'};
+function view(){
+  $('#tabs').replaceChildren(...Object.keys(names).map(k=>el('button',{class:k===tab?'on':'',onclick:()=>{tab=k;msg='';view();scrollTo(0,0)}},names[k])));
+  $('#main').replaceChildren(...T[tab]());
+}
+
+T.info=()=>{const I=S.info;
+  const logo=el('div',{class:'row'},I.logo?el('img',{src:I.logo,width:64,height:64,style:'border-radius:50%;object-fit:cover'}):el('div',{class:'th',style:'border-radius:50%;width:64px;height:64px'},'🏷️'),
+    pick('btn',I.logo?'تغییر لوگو':'انتخاب لوگو از گوشی',false,async([f])=>{I.logo=await compress(f,256,'image/png');save();view()}),
+    I.logo&&el('button',{class:'btn x s',onclick:()=>{I.logo='';save();view()}},'حذف'));
+  const col=el('input',{type:'color',value:I.brand});col.oninput=()=>{I.brand=col.value;save()};
+  const sw=['#0F6B5C','#B4532A','#1F3A8A','#7A1F3D','#2B2B2B','#C28A00'].map(c=>el('div',{class:'sw',style:'background:'+c,onclick:()=>{I.brand=c;save();view()}}));
+  return[el('div',{class:'box'},field('نام کافه / رستوران',I,'name',{ph:'مثلاً کافه ساحل'}),field('شعار کوتاه (اختیاری)',I,'tagline'),el('div',{class:'f'},el('span',{},'لوگو'),logo),
+    el('div',{class:'f'},el('span',{},'رنگ برند'),el('div',{class:'row'},col,...sw))),
+    el('div',{class:'box'},field('تلفن',I,'phone',{type:'tel',mode:'tel',dir:'ltr'}),field('آدرس',I,'address',{area:true}),field('ساعت کار',I,'hours',{ph:'هر روز ۹ تا ۲۴'}),field('اینستاگرام (آیدی)',I,'instagram',{dir:'ltr',ph:'cafe_sahel'}),field('پیام پایین منو',I,'note')),
+    el('button',{class:'btn p big',onclick:()=>{tab='cats';view()}},'مرحله بعد: دسته‌ها')];
+};
+
+T.cats=()=>{
+  const add=n=>{n=n.trim();if(n&&!S.categories.some(c=>c.name===n)){S.categories.push({id:uid(),name:n});save();view()}};
+  const inp=el('input',{placeholder:'نام دسته، مثلاً قهوه'});
+  const presets=['قهوه','نوشیدنی سرد','دمنوش و چای','اسموتی','کیک و دسر','صبحانه','پیش‌غذا','غذای اصلی','پیتزا','ساندویچ','برگر'].filter(p=>!S.categories.some(c=>c.name===p));
+  const rows=S.categories.map((c,i)=>{
+    const n=el('input',{value:c.name});n.oninput=()=>{c.name=n.value;save()};
+    const mv=d=>()=>{const j=i+d;if(j<0||j>=S.categories.length)return;[S.categories[i],S.categories[j]]=[S.categories[j],S.categories[i]];save();view()};
+    return el('div',{class:'row'},n,el('button',{class:'btn s',onclick:mv(-1)},'▲'),el('button',{class:'btn s',onclick:mv(1)},'▼'),
+      el('button',{class:'btn x s',onclick:()=>{const k=S.items.filter(x=>x.cat===c.id).length;if(confirm(k?`این دسته و ${k} محصولش حذف شود؟`:'این دسته حذف شود؟')){S.categories.splice(i,1);S.items=S.items.filter(x=>x.cat!==c.id);save();view()}}},'حذف'));
+  });
+  return[el('div',{class:'box'},el('div',{class:'row'},inp,el('button',{class:'btn p',onclick:()=>add(inp.value)},'افزودن')),
+    presets.length&&el('div',{class:'f'},el('span',{},'پیشنهادی (با یک لمس اضافه می‌شود)'),el('div',{class:'chips'},presets.map(p=>el('button',{class:'chip',onclick:()=>add(p)},'+ '+p))))),
+    S.categories.length?el('div',{class:'box'},el('span',{class:'hint'},'ترتیب اینجا همان ترتیب منو است.'),...rows):el('div',{class:'empty'},'هنوز دسته‌ای نیست.'),
+    S.categories.length>0&&el('button',{class:'btn p big',onclick:()=>{tab='items';view()}},'مرحله بعد: محصولات')];
+};
+
+T.items=()=>{
+  if(!S.categories.length)return[el('div',{class:'box empty'},'اول در بخش «دسته‌ها» چند دسته بسازید.')];
+  if(!S.categories.some(c=>c.id===cur))cur=S.categories[0].id;
+  const chips=el('div',{class:'chips'},S.categories.map(c=>el('button',{class:'chip'+(c.id===cur?' on':''),onclick:()=>{cur=c.id;view()}},c.name+' ('+S.items.filter(i=>i.cat===c.id).length+')')));
+  const bulk=pick('btn p big','📷 انتخاب عکس محصولات (چندتایی)',true,async files=>{
+    const made=[];let n=0;
+    for(const f of files){$('#st').textContent=`پردازش عکس ${++n} از ${files.length}…`;try{made.push({id:uid(),cat:cur,name:'',price:'',desc:'',img:await compress(f,720,'image/jpeg',.72),off:false})}catch{}}
+    S.items.unshift(...made);save();view();
+  });
+  const list=S.items.filter(i=>i.cat===cur).map(it=>{
+    const th=pick('th',it.img?el('img',{src:it.img}):'📷',false,async([f])=>{it.img=await compress(f,720,'image/jpeg',.72);save();view()});
+    const sel=el('select',{},S.categories.map(c=>el('option',{value:c.id,selected:c.id===it.cat},c.name)));sel.onchange=()=>{it.cat=sel.value;save();view()};
+    const off=el('input',{type:'checkbox',checked:it.off});off.onchange=()=>{it.off=off.checked;save()};
+    return el('div',{class:'box item'+(it.name?'':' warn')},th,el('div',{style:'display:grid;gap:8px'},
+      field('نام',it,'name',{ph:'نام محصول'}),field('قیمت (تومان)',it,'price',{num:true,mode:'numeric',ph:'مثلاً ۱۲۰۰۰۰'}),field('توضیح (اختیاری)',it,'desc',{area:true}),
+      el('label',{class:'f'},el('span',{},'دسته'),sel),
+      el('div',{class:'row'},el('label',{class:'row'},off,'ناموجود'),el('button',{class:'btn x s',style:'margin-inline-start:auto',onclick:()=>{if(confirm('این محصول حذف شود؟')){S.items=S.items.filter(x=>x!==it);save();view()}}},'حذف'))));
+  });
+  return[chips,el('div',{class:'box'},bulk,el('button',{class:'btn',onclick:()=>{S.items.unshift({id:uid(),cat:cur,name:'',price:'',desc:'',img:'',off:false});save();view()}},'+ محصول بدون عکس'),el('span',{class:'hint'},'بعد از انتخاب عکس‌ها فقط نام و قیمت هر کدام را بنویسید.')),
+    ...(list.length?list:[el('div',{class:'empty'},'این دسته هنوز محصولی ندارد.')])];
+};
+
+T.pub=()=>{
+  const miss=[];if(!S.info.name)miss.push('نام کافه وارد نشده');
+  const nn=S.items.filter(i=>!i.name).length;if(nn)miss.push(nn+' محصول بدون نام');
+  if(!S.items.length)miss.push('هنوز محصولی نیست');
+  const ready=GH.owner&&GH.repo&&GH.token;
+  const out=el('div',{class:msg.startsWith('✓')?'ok':'bad'},msg);
+  const dl=()=>{const a=el('a',{href:URL.createObjectURL(new Blob([JSON.stringify(S)],{type:'application/json'})),download:'menu.json'});a.click()};
+  
+  const fi=el('input',{type:'file',accept:'.json'});fi.onchange=async()=>{try{S=JSON.parse(await fi.files[0].text());save();msg='✓ فایل بارگذاری شد';view()}catch{msg='فایل معتبر نیست'; view()}};
+  return[el('div',{class:'box'},miss.length?el('div',{class:'bad'},miss.map(m=>el('div',{},'• '+m))):el('div',{class:'ok'},'✓ همه چیز آماده است'),
+    el('button',{class:'btn big',onclick:()=>open('index.html?preview=1','_blank')},'پیش‌نمایش منو'),
+    ready?el('button',{class:'btn p big',onclick:publish},'انتشار روی سایت'):el('div',{class:'hint'},'انتشار خودکار هنوز توسط فروشنده تنظیم نشده است. می‌توانید فایل را دانلود و برای فروشنده بفرستید.'),out),
+    el('div',{class:'box'},el('button',{class:'btn',onclick:dl},'دانلود فایل menu.json'),el('label',{class:'f'},el('span',{},'بارگذاری menu.json از فایل'),fi),
+    el('button',{class:'btn x',onclick:async()=>{if(confirm('تغییرات ذخیره‌شده در این گوشی پاک و منوی منتشرشده دوباره خوانده شود؟')){await idb('readwrite','draft',null);location.reload()}}},'بازگشت به نسخه منتشرشده'))];
+};
+
+async function publish(){
+  msg='در حال انتشار…';view();
+  try{
+    const api=`https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/data/menu.json`;
+    const H={Authorization:'Bearer '+GH.token,Accept:'application/vnd.github+json'};
+    const g=await fetch(api+'?ref='+GH.branch,{headers:H});let sha;
+    if(g.ok)sha=(await g.json()).sha;else if(g.status!==404)throw new Error('دسترسی به مخزن ممکن نیست ('+g.status+')');
+    const bytes=new TextEncoder().encode(JSON.stringify(S));let bin='';
+    for(let i=0;i<bytes.length;i+=32768)bin+=String.fromCharCode.apply(null,bytes.subarray(i,i+32768));
+    const p=await fetch(api,{method:'PUT',headers:{...H,'Content-Type':'application/json'},body:JSON.stringify({message:'update menu',content:btoa(bin),sha,branch:GH.branch})});
+    if(!p.ok)throw new Error('انتشار انجام نشد ('+p.status+')');
+    msg='✓ منتشر شد. تا ۲ دقیقه دیگر در سایت دیده می‌شود.';
+  }catch(e){msg=e.message}
+  view();
+}
+
+T.seller=()=>{
+  const I=S.info;
+  const ghf=(l,k,o={})=>{const i=el('input',{type:o.type||'text',dir:'ltr',placeholder:o.ph||''});i.value=GH[k]||'';i.oninput=()=>{GH[k]=i.value.trim();saveGH()};return el('label',{class:'f'},el('span',{},l),i)};
+  const lat=parseFloat(en(I.mapLat||'')),lng=parseFloat(en(I.mapLng||''));
+  const map=!isNaN(lat)&&!isNaN(lng)&&el('iframe',{title:'نقشه',src:`https://www.openstreetmap.org/export/embed.html?bbox=${lng-.004},${lat-.002},${lng+.004},${lat+.002}&layer=mapnik&marker=${lat},${lng}`});
+  return[el('div',{class:'box'},el('b',{},'نقشه (فروشنده)'),el('span',{class:'hint'},'در گوگل‌مپ روی محل لمس طولانی بزنید و دو عدد را کپی کنید.'),
+    field('عرض جغرافیایی (lat)',I,'mapLat',{dir:'ltr',ph:'27.1865'}),field('طول جغرافیایی (lng)',I,'mapLng',{dir:'ltr',ph:'56.2808'}),field('لینک مسیریابی (اختیاری: نشان، بلد، گوگل‌مپ)',I,'mapLink',{dir:'ltr',ph:'https://...'}),map),
+    el('div',{class:'box'},el('b',{},'انتشار خودکار (فقط یک‌بار روی گوشی مشتری)'),el('span',{class:'hint'},'توکن فقط در همین مرورگر می‌ماند و داخل منو یا مخزن ذخیره نمی‌شود.'),
+      ghf('نام کاربری گیت‌هاب','owner'),ghf('نام مخزن','repo'),ghf('شاخه','branch',{ph:'main'}),ghf('توکن (Fine-grained، فقط Contents: Read and write)','token',{type:'password'}))];
+};
+
+(async()=>{
+  try{GH={...GH,...(await idb('readonly','gh')||{})}}catch{}
+  try{S=await idb('readonly','draft')}catch{}
+  if(!S){try{S=await(await fetch('data/menu.json',{cache:'no-cache'})).json()}catch{}}
+  S=S||blank();view();
+})();
+</script>
+</body>
+</html>
