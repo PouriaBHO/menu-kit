@@ -1,9 +1,135 @@
-{"v":1,"info":{"name":"کافه نمونه","tagline":"قهوه، دسر و آرامش","logo":"","brand":"#0F6B5C","phone":"07612345678","address":"بندرعباس، خیابان نمونه، پلاک ۱۰","hours":"هر روز ۹ صبح تا ۱۲ شب","instagram":"sample_cafe","note":"سفارش خود را به گارسون بگویید","mapLat":"27.1865","mapLng":"56.2808","mapLink":""},
-"categories":[{"id":"c1","name":"قهوه"},{"id":"c2","name":"نوشیدنی سرد"},{"id":"c3","name":"کیک و دسر"}],
-"items":[
-{"id":"i1","cat":"c1","name":"اسپرسو","price":"85000","desc":"دبل شات، قهوه تازه آسیاب‌شده","img":"","off":false},
-{"id":"i2","cat":"c1","name":"لاته","price":"120000","desc":"اسپرسو با شیر بخارداده","img":"","off":false},
-{"id":"i3","cat":"c1","name":"کاپوچینو","price":"125000","desc":"","img":"","off":false},
-{"id":"i4","cat":"c2","name":"آیس‌آمریکانو","price":"110000","desc":"","img":"","off":false},
-{"id":"i5","cat":"c2","name":"موهیتو","price":"135000","desc":"نعنا، لیمو، گاز","img":"","off":true},
-{"id":"i6","cat":"c3","name":"چیزکیک","price":"150000","desc":"با سس توت‌فرنگی","img":"","off":false}]}
+{
+  "v": 1,
+  "info": {
+    "name": "کافه تست",
+    "tagline": "تست نمایش تصاویر با لینک مستقیم",
+    "logo": "",
+    "brand": "#0F6B5C",
+    "phone": "02112345678",
+    "address": "تهران، خیابان نمونه، پلاک ۱۲",
+    "hours": "هر روز ۸ صبح تا ۱۱ شب",
+    "instagram": "test_cafe",
+    "note": "این یک منوی تستی برای بررسی نمایش تصاویر است.",
+    "mapLat": "35.6892",
+    "mapLng": "51.3890",
+    "mapLink": ""
+  },
+  "categories": [
+    { "id": "c1", "name": "قهوه" },
+    { "id": "c2", "name": "نوشیدنی سرد" },
+    { "id": "c3", "name": "کیک و دسر" },
+    { "id": "c4", "name": "صبحانه" },
+    { "id": "c5", "name": "برگر و پیتزا" },
+    { "id": "c6", "name": "اسموتی و آبمیوه" }
+  ],
+  "items": [
+    {
+      "id": "i1",
+      "cat": "c1",
+      "name": "اسپرسو",
+      "price": "85000",
+      "desc": "دبل شات، قهوه تازه آسیاب‌شده",
+      "img": "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=400&q=80&fit=crop",
+      "off": false
+    },
+    {
+      "id": "i2",
+      "cat": "c1",
+      "name": "لاته",
+      "price": "120000",
+      "desc": "اسپرسو با شیر بخارداده",
+      "img": "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&q=80&fit=crop",
+      "off": false
+    },
+    {
+      "id": "i3",
+      "cat": "c2",
+      "name": "آیس آمریکانو",
+      "price": "110000",
+      "desc": "قهوه سرد با یخ",
+      "img": "https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=400&q=80&fit=crop",
+      "off": false
+    },
+    {
+      "id": "i4",
+      "cat": "c2",
+      "name": "موهیتو",
+      "price": "135000",
+      "desc": "نعنا، لیمو، گاز",
+      "img": "https://images.unsplash.com/photo-1523677011781-c91d1bbe2f9e?w=400&q=80&fit=crop",
+      "off": true
+    },
+    {
+      "id": "i5",
+      "cat": "c3",
+      "name": "چیزکیک",
+      "price": "150000",
+      "desc": "با سس توت‌فرنگی",
+      "img": "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=400&q=80&fit=crop",
+      "off": false
+    },
+    {
+      "id": "i6",
+      "cat": "c3",
+      "name": "براونی شکلاتی",
+      "price": "130000",
+      "desc": "شکلات تلخ با مغز گردو",
+      "img": "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=400&q=80&fit=crop",
+      "off": false
+    },
+    {
+      "id": "i7",
+      "cat": "c4",
+      "name": "املت مخصوص",
+      "price": "145000",
+      "desc": "با قارچ و پنیر",
+      "img": "https://images.unsplash.com/photo-1510693206972-df098062cb71?w=400&q=80&fit=crop",
+      "off": false
+    },
+    {
+      "id": "i8",
+      "cat": "c4",
+      "name": "نان و پنیر و گردو",
+      "price": "95000",
+      "desc": "صبحانه سنتی",
+      "img": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80&fit=crop",
+      "off": false
+    },
+    {
+      "id": "i9",
+      "cat": "c5",
+      "name": "چیزبرگر دوبل",
+      "price": "280000",
+      "desc": "دو لایه گوشت با پنیر چدار",
+      "img": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80&fit=crop",
+      "off": false
+    },
+    {
+      "id": "i10",
+      "cat": "c5",
+      "name": "پیتزا پپرونی",
+      "price": "320000",
+      "desc": "خمیر تازه با پپرونی گوشت",
+      "img": "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=400&q=80&fit=crop",
+      "off": false
+    },
+    {
+      "id": "i11",
+      "cat": "c6",
+      "name": "اسموتی توت‌فرنگی",
+      "price": "125000",
+      "desc": "توت‌فرنگی تازه با ماست",
+      "img": "https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=400&q=80&fit=crop",
+      "off": false
+    },
+    {
+      "id": "i12",
+      "cat": "c6",
+      "name": "آب پرتقال طبیعی",
+      "price": "90000",
+      "desc": "پرتقال تازه بدون شکر",
+      "img": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=400&q=80&fit=crop",
+      "off": false
+    }
+  ]
+}
