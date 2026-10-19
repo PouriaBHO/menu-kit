@@ -5,40 +5,23 @@
     "tagline": "تست نمایشی - یک کافه برای گذراندن زمان فراغت شما",
     "logo": "",
     "brand": "#2B2B2B",
-    "phone": "09190100216",
-    "address": "بندرعباس، خیابان نمونه، پلاک ۱۲",
-    "hours": "هر روز ۸ صبح تا ۱۱ شب",
+    "phone": "09928710944",
+    "address": "بندرعباس، آزادشهر، روبروی زمین ورزشی شهسوار، جنب املاک هواسی",
+    "hours": "هر روز 9 صبح تا 10 شب",
     "instagram": "pouriabh1997",
-    "note": "این یک منوی تستی برای بررسی نمایش تصاویر است.",
+    "note": "این یک منوی تستی است.",
     "mapLat": "27.2093072",
     "mapLng": "56.3155685",
-    "mapLink": "https://neshan.org/maps/places/4d48e52b5cc8db0c9e95edb0aea9ec2d#c27.209-56.316-18z-0p"
+    "mapLink": "https://neshan.org/maps/places/4d48e52b5cc8db0c9e95edb0aea9ec2d#c27.209-56.316-18z-0p",
+    "orderUrl": "https://script.google.com/macros/s/AKfycby8RNCE4fLwGcYVCBB2_XWb75JBFGxbRafX-MpUIvRM3BfOme-xCUypJFtEktTbFe1Xyw/exec"
   },
   "categories": [
-    {
-      "id": "c1",
-      "name": "قهوه"
-    },
-    {
-      "id": "c2",
-      "name": "نوشیدنی سرد"
-    },
-    {
-      "id": "c3",
-      "name": "کیک و دسر"
-    },
-    {
-      "id": "c4",
-      "name": "صبحانه"
-    },
-    {
-      "id": "c5",
-      "name": "برگر و پیتزا"
-    },
-    {
-      "id": "c6",
-      "name": "اسموتی و آبمیوه"
-    }
+    { "id": "c1", "name": "قهوه" },
+    { "id": "c2", "name": "نوشیدنی سرد" },
+    { "id": "c3", "name": "کیک و دسر" },
+    { "id": "c4", "name": "صبحانه" },
+    { "id": "c5", "name": "برگر و پیتزا" },
+    { "id": "c6", "name": "اسموتی و آبمیوه" }
   ],
   "items": [
     {
